@@ -167,13 +167,11 @@ app.get("/states/:stateId/stats/", async (request, response) => {
 app.get("/districts/:districtId/details/", async (request, response) => {
   const { districtId } = request.params;
   const getStateNameOfDistrictQuery = `
-        SELECT
-            state.state_name as stateName
-        FROM
-            state INNER JOIN district ON state.state_id = district.state_id
-        WHERE
-            district.district_id = ${districtId};`;
-  const result = db.run(getStateNameOfDistrictQuery);
+        SELECT state.state_name as stateName
+        FROM state
+        INNER JOIN district ON state.state_id = district.state_id
+        WHERE district.district_id = ${districtId};`;
+  const result = await db.get(getStateNameOfDistrictQuery);
   response.send(result);
 });
 
